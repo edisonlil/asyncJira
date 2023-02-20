@@ -1,4 +1,4 @@
-import src.jira.JiraClient as jc
+import src._jira.JiraClient as jc
 import pandas as pd
 
 
@@ -25,7 +25,7 @@ class JiraTaskSubmit:
 
             # 入参字段
             fields = {
-                "project": {"key": jc.ProjectCode},
+                "project": {"key": self.jiraClient.projectCode},
                 "assignee": {"name": jc.ProjectUsers[getattr(row, '任务执行人')]},
                 "summary": getattr(row, '概要').strip().replace('\n', ''),
                 "priority": {"id": jc.Priorities[getattr(row, '重要紧急程度')]},
@@ -35,6 +35,8 @@ class JiraTaskSubmit:
                 "issuetype": jc.IssueTypeTask
             }
 
+
+
             # 预估工时
             if getattr(row, '计划完成时长') is not None:
                 fields['timetracking'] = {
@@ -43,8 +45,8 @@ class JiraTaskSubmit:
             pass
 
             # 任务描述
-            if isinstance(getattr(row, '任务描述'), str):
-                fields['description'] = getattr(row, '任务描述')
+            if isinstance(getattr(row, '描述'), str):
+                fields['description'] = getattr(row, '描述')
             else:
                 fields['description'] = ''
             pass
@@ -59,10 +61,10 @@ pass
 
 
 def getFixVersions(row):
-    if getattr(row, "变更版本") is None:
+    if getattr(row, "修复的版本") is None:
         return []
 
-    versions = str(getattr(row, '变更版本')).split(",")
+    versions = str(getattr(row, '修复的版本')).split(",")
     result = []
     for version in versions:
         result.append({

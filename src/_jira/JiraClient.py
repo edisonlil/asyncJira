@@ -17,7 +17,7 @@ IssueTypeTask = {"id": "10100", "name": "任务"}
 IssueTypeImprove = {"id": "10203", "name": "改进"}
 IssueTypeSubTask = {"id": "10101", "name": "子任务"}
 IssueTypeBug = {"id": "10201", "name": "BUG"}
-IssueTypeBug = {"id": "10204", "name": "新功能"}
+IssueTypeNew = {"id": "10204", "name": "新功能"}
 
 
 class JiraClient:
