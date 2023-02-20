@@ -4,7 +4,7 @@ import pandas as pd
 
 class JiraTaskSubmit:
 
-    def __init__(self,jiraServer, username, password, projectCode):
+    def __init__(self, jiraServer, username, password, projectCode):
         self.jiraClient = jc.JiraClient(jiraServer, username, password, projectCode)
 
     pass
