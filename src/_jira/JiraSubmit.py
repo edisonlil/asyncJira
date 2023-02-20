@@ -81,10 +81,10 @@ def switchIssueTask(row):
 
 
 def getFixVersions(row):
-    if getattr(row, "影响版本") is None:
+    if getattr(row, "修复的版本") is None:
         return []
 
-    versions = str(getattr(row, '影响版本')).split(",")
+    versions = str(getattr(row, '修复的版本')).split(",")
     result = []
     for version in versions:
         result.append({
@@ -95,10 +95,10 @@ def getFixVersions(row):
 
 
 def getVersions(row):
-    if getattr(row, "修复的版本") is None:
+    if getattr(row, "影响版本") is None:
         return []
 
-    versions = str(getattr(row, '修复的版本')).split(",")
+    versions = str(getattr(row, '影响版本')).split(",")
     result = []
     for version in versions:
         result.append({
