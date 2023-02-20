@@ -32,10 +32,21 @@ class JiraTaskSubmit:
                 "reporter": {"name": jc.ProjectUsers[getattr(row, '报告人')]},
                 "components": getComponents(row),
                 "fixVersions": getFixVersions(row),
-                "issuetype": jc.IssueTypeTask
+                "versions": getVersions(row)
             }
 
+            if getattr(row, '问题类型') is not None:
+                fields["issuetype"] = switchIssueTask(row)
+            pass
 
+            if getattr(row, '问题类型') is not None:
+                if str(getattr(row, '问题类型')) == "BUG":
+                    fields["issuetype"] = jc.IssueTypeBug
+                elif str(getattr(row, '问题类型')) == "改进":
+                    fields["issuetype"] = jc.IssueTypeImprove
+                else:
+                    fields["issuetype"] = jc.IssueTypeTask
+            pass
 
             # 预估工时
             if getattr(row, '计划完成时长') is not None:
@@ -60,7 +71,30 @@ class JiraTaskSubmit:
 pass
 
 
+def switchIssueTask(row):
+    if str(getattr(row, '问题类型')) == "BUG":
+        return jc.IssueTypeBug
+    elif str(getattr(row, '问题类型')) == "改进":
+        return jc.IssueTypeImprove
+    else:
+        return jc.IssueTypeTask
+
+
 def getFixVersions(row):
+    if getattr(row, "影响版本") is None:
+        return []
+
+    versions = str(getattr(row, '影响版本')).split(",")
+    result = []
+    for version in versions:
+        result.append({
+            "id": jc.FixVersions[version]
+        })
+    pass
+    return result
+
+
+def getVersions(row):
     if getattr(row, "修复的版本") is None:
         return []
 
