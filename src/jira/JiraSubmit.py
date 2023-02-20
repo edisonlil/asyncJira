@@ -27,10 +27,11 @@ class JiraTaskSubmit:
             fields = {
                 "project": {"key": jc.ProjectCode},
                 "assignee": {"name": jc.ProjectUsers[getattr(row, '任务执行人')]},
-                "summary": getattr(row, '任务描述').strip().replace('\n', ''),
+                "summary": getattr(row, '概要').strip().replace('\n', ''),
                 "priority": {"id": jc.Priorities[getattr(row, '重要紧急程度')]},
                 "reporter": {"name": jc.ProjectUsers[getattr(row, '报告人')]},
                 "components": getComponents(row),
+                "fixVersions": getFixVersions(row),
                 "issuetype": jc.IssueTypeTask
             }
 
@@ -55,6 +56,20 @@ class JiraTaskSubmit:
 
 
 pass
+
+
+def getFixVersions(row):
+    if getattr(row, "变更版本") is None:
+        return []
+
+    versions = str(getattr(row, '变更版本')).split(",")
+    result = []
+    for version in versions:
+        result.append({
+            "id": jc.FixVersions[version]
+        })
+    pass
+    return result
 
 
 def getComponents(row):
@@ -82,9 +97,3 @@ def fromDate(date):
         return date.__format__('%Y-%m-%d')
     except Exception as e:
         {}
-
-if __name__ == "__main__":
-    submit = JiraTaskSubmit()
-    submit.process_excel(r'C:\Users\edsio\PycharmProjects\asyncJira\asyncJira\任务管理.xlsx')
-
-    pass
